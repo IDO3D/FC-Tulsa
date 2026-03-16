@@ -1,0 +1,2102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>FC TULSA // LE TOURBILLON DU FOOTBALL</title>
+    <meta content="The official futuristic digital terminal of FC Tulsa. Professional soccer evolved." name="description"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Montserrat:wght@100;300;400;700;900&family=JetBrains+Mono:wght@100;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --fct-gold: #B38E5D;
+            --fct-gold-muted: #8d704a;
+            --fct-onyx: #050505;
+            --fct-pitch: #000000;
+            --fct-line: rgba(179, 142, 93, 0.15);
+            --ease-luxury: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--fct-onyx);
+            color: white;
+            margin: 0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: -0.01em;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-size: 0.65rem;
+        }
+
+        /* --- SCANLINES --- */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.08) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.15;
+        }
+
+        .vignette {
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.85) 100%);
+            pointer-events: none;
+        }
+
+        /* --- NAVIGATION --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--fct-line);
+            transition: all 0.5s var(--ease-luxury);
+        }
+        header.scrolled {
+            padding: 0.85rem 3rem;
+            background: rgba(0,0,0,0.97);
+        }
+        .nav-item {
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: white;
+            opacity: 0.55;
+            cursor: pointer;
+            transition: all 0.4s var(--ease-luxury);
+            padding-bottom: 2px;
+        }
+        .nav-item:hover { opacity: 1; color: var(--fct-gold); }
+        .nav-item.active { opacity: 1; color: var(--fct-gold); border-bottom: 1px solid var(--fct-gold); }
+
+        /* Mobile menu toggle */
+        #mobile-menu-btn { display: none; cursor: pointer; }
+        #mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.98);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5rem;
+        }
+        #mobile-nav.open { display: flex; }
+        #mobile-nav .nav-item { font-size: 1rem; opacity: 0.7; }
+        #mobile-close { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 0.6rem; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.3em; color: var(--fct-gold); cursor: pointer; }
+
+        /* --- PAGE CONTENT --- */
+        .page-content { display: none; }
+        .page-content.active { display: block; animation: pageIn 0.9s var(--ease-luxury); }
+        @keyframes pageIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- HERO --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000;
+        }
+        .hero-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.55;
+            z-index: 1;
+        }
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 9rem);
+            line-height: 1;
+            font-style: italic;
+            letter-spacing: -0.02em;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 20;
+            text-align: center;
+            padding: 0 1.5rem;
+        }
+
+        /* --- EDITORIAL TITLE --- */
+        .editorial-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        /* --- TACTICAL PITCH --- */
+        .pitch-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            aspect-ratio: 3/4;
+            margin: 0 auto;
+            background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+            border: 1px solid var(--fct-line);
+            overflow: visible;
+        }
+        .pitch-center-line { position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: rgba(179,142,93,0.1); }
+        .pitch-center-circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 20%; height: 25%; border: 1px solid rgba(179,142,93,0.1); border-radius: 50%; }
+        .pitch-box { position: absolute; width: 32%; height: 20%; border: 1px solid rgba(179,142,93,0.1); left: 50%; transform: translateX(-50%); }
+        .pitch-box-top { top: 0; border-top: none; }
+        .pitch-box-bottom { bottom: 0; border-bottom: none; }
+
+        /* Pitch corner marks */
+        .pitch-corner { position: absolute; width: 10px; height: 10px; border-color: rgba(179,142,93,0.15); }
+        .pitch-corner-tl { top: 0; left: 0; border-right: 1px solid; border-bottom: 1px solid; }
+        .pitch-corner-tr { top: 0; right: 0; border-left: 1px solid; border-bottom: 1px solid; }
+        .pitch-corner-bl { bottom: 0; left: 0; border-right: 1px solid; border-top: 1px solid; }
+        .pitch-corner-br { bottom: 0; right: 0; border-left: 1px solid; border-top: 1px solid; }
+
+        /* --- PLAYER NODE --- */
+        .player-node {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+        .node-disc {
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--fct-gold);
+            border-radius: 50%;
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 0.55rem;
+            cursor: pointer;
+            transition: all 0.4s var(--ease-luxury);
+            box-shadow: 0 0 15px rgba(179,142,93,0.25);
+            pointer-events: auto;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.05em;
+        }
+        .player-node:hover .node-disc {
+            background: var(--fct-gold);
+            color: black;
+            transform: scale(1.25);
+            box-shadow: 0 0 25px rgba(179,142,93,0.5);
+        }
+
+        /* Diamond HUD Hover Card */
+        .diamond-hud-card {
+            position: absolute;
+            bottom: 48px;
+            left: 50%;
+            transform: translateX(-50%) translateY(8px) scale(0.94);
+            width: 210px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.45s var(--ease-luxury);
+            z-index: 50;
+            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.95));
+            pointer-events: none;
+        }
+        .diamond-shape {
+            clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);
+            background: var(--fct-gold);
+            padding: 1px;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+        .diamond-inner {
+            clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);
+            background: #0a0a0a;
+            padding: 1.2rem;
+        }
+        .player-node:hover .diamond-hud-card {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        /* 360 Expand Transition */
+        .expanding {
+            animation: cardExpand 0.65s cubic-bezier(0.4,0,0.2,1) forwards;
+            pointer-events: none;
+        }
+        @keyframes cardExpand {
+            0%   { transform: rotateY(0deg) scale(1); opacity: 1; filter: brightness(1); }
+            100% { transform: rotateY(360deg) scale(1.6); opacity: 0; filter: brightness(3) blur(8px); }
+        }
+
+        /* --- PLAYER PROFILE MODAL --- */
+        #player-profile-view {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.99);
+            z-index: 2000;
+            display: none;
+            overflow-y: auto;
+            backdrop-filter: blur(40px);
+            overscroll-behavior: contain;
+        }
+        #player-profile-view.active { display: block; animation: profileIn 0.75s var(--ease-luxury); }
+        @keyframes profileIn { from { opacity: 0; transform: scale(1.04); } to { opacity: 1; transform: scale(1); } }
+
+        /* --- TACTICAL CARDS --- */
+        .tactical-grid { border-top: 1px solid var(--fct-line); border-bottom: 1px solid var(--fct-line); }
+        .tactical-card { border-right: 1px solid var(--fct-line); transition: all 0.7s var(--ease-luxury); background: rgba(5,5,5,0.6); position: relative; }
+        .tactical-card:last-child { border-right: none; }
+        .tactical-card:hover { background: rgba(179,142,93,0.04); }
+
+        /* --- ROSTER GRID (Reserves) --- */
+        .player-card-compact {
+            aspect-ratio: 2/3;
+            background: linear-gradient(135deg, #111 0%, #000 100%);
+            border: 1px solid var(--fct-line);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.2rem;
+            transition: all 0.5s var(--ease-luxury);
+            cursor: pointer;
+        }
+        .player-card-compact:hover {
+            border-color: var(--fct-gold);
+            transform: translateY(-4px);
+            box-shadow: 0 0 30px rgba(179,142,93,0.08);
+        }
+
+        /* --- BUTTONS --- */
+        .btn-gold {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--fct-gold);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            transition: all 0.4s var(--ease-luxury);
+            background: var(--fct-gold);
+            color: black;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn-gold:hover { background: transparent; color: var(--fct-gold); box-shadow: 0 0 20px rgba(179,142,93,0.25); }
+        .btn-outline {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            transition: all 0.4s var(--ease-luxury);
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+        }
+        .btn-outline:hover { background: white; color: black; }
+
+        /* --- PRELOADER --- */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 1.2s cubic-bezier(0.8, 0, 0.2, 1);
+        }
+        .loader-dial { width: 150px; height: 150px; border: 1px solid rgba(179,142,93,0.2); border-radius: 50%; position: relative; display: flex; align-items: center; justify-content: center; }
+        .loader-hand { position: absolute; top: 50%; left: 50%; width: 1px; height: 55px; background: var(--fct-gold); transform-origin: top center; animation: tick 2.5s linear infinite; }
+        @keyframes tick { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* ═══════════════ SCHEDULE — FIFA26 HUD STYLE ═══════════════ */
+        .record-bar { display:flex; align-items:center; border:1px solid var(--fct-line); overflow:hidden; }
+        .record-stat { flex:1; padding:1.4rem 0.8rem; text-align:center; border-right:1px solid var(--fct-line); transition:background 0.4s var(--ease-luxury); }
+        .record-stat:last-child { border-right:none; }
+        .record-stat:hover { background:rgba(179,142,93,0.05); }
+        .record-num { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,4vw,3rem); font-style:italic; line-height:1; color:white; }
+        .record-num.wins { color:#4ade80; }
+        .record-num.draws { color:var(--fct-gold); }
+        .record-num.losses { color:rgba(255,255,255,0.3); }
+        .record-label { font-family:'JetBrains Mono',monospace; font-size:0.5rem; letter-spacing:0.3em; text-transform:uppercase; opacity:0.3; margin-top:0.3rem; }
+
+        .match-hud-card { position:relative; border-bottom:1px solid rgba(179,142,93,0.08); overflow:hidden; cursor:pointer; transition:background 0.4s var(--ease-luxury); }
+        .match-hud-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--fct-gold); transform:scaleY(0); transform-origin:bottom; transition:transform 0.4s var(--ease-luxury); z-index:2; }
+        .match-hud-card::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent 0%,rgba(179,142,93,0.03) 50%,transparent 100%); transform:translateX(-100%); transition:transform 0.65s var(--ease-luxury); pointer-events:none; z-index:1; }
+        .match-hud-card:hover { background:rgba(179,142,93,0.04); }
+        .match-hud-card:hover::before { transform:scaleY(1); }
+        .match-hud-card:hover::after { transform:translateX(100%); }
+        .match-hud-card.next-match { background:rgba(179,142,93,0.04); }
+        .match-hud-card.next-match::before { transform:scaleY(1); }
+
+        .match-hud-inner { display:grid; grid-template-columns:88px 38px 1fr auto auto; align-items:center; position:relative; z-index:2; }
+
+        .match-date-block { padding:1.5rem 1rem; border-right:1px solid rgba(179,142,93,0.08); }
+        .match-date-day { font-family:'JetBrains Mono',monospace; font-size:0.48rem; letter-spacing:0.3em; text-transform:uppercase; opacity:0.3; margin-bottom:0.2rem; }
+        .match-date-num { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-style:italic; line-height:1; }
+        .match-date-month { font-family:'JetBrains Mono',monospace; font-size:0.48rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--fct-gold); opacity:0.7; margin-top:0.1rem; }
+
+        .match-ha-block { padding:1.5rem 0.4rem; display:flex; align-items:center; justify-content:center; border-right:1px solid rgba(179,142,93,0.08); }
+        .ha-pip { font-family:'JetBrains Mono',monospace; font-size:0.5rem; width:22px; height:22px; display:flex; align-items:center; justify-content:center; border-radius:2px; letter-spacing:0.05em; }
+        .ha-home { background:rgba(179,142,93,0.15); color:var(--fct-gold); border:1px solid rgba(179,142,93,0.3); }
+        .ha-away { background:rgba(255,255,255,0.03); color:rgba(255,255,255,0.3); border:1px solid rgba(255,255,255,0.08); }
+
+        .match-opp-block { padding:1.2rem 1.6rem; display:flex; align-items:center; gap:1rem; }
+        .opp-crest { width:32px; height:32px; flex-shrink:0; border-radius:50%; border:1px solid rgba(255,255,255,0.07); background:rgba(255,255,255,0.03); display:flex; align-items:center; justify-content:center; overflow:hidden; transition:border-color 0.3s; }
+        .match-hud-card:hover .opp-crest { border-color:rgba(179,142,93,0.3); }
+        .opp-initials { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.7rem; font-weight:600; color:rgba(255,255,255,0.3); }
+        .opp-name-main { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.4rem; line-height:1.1; text-transform:uppercase; letter-spacing:-0.01em; transition:color 0.3s; }
+        .match-hud-card:hover .opp-name-main { color:var(--fct-gold); }
+        .opp-conf { font-family:'JetBrains Mono',monospace; font-size:0.48rem; letter-spacing:0.2em; text-transform:uppercase; opacity:0.22; margin-top:0.1rem; }
+        .next-match-pip { font-family:'JetBrains Mono',monospace; font-size:0.43rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--fct-gold); padding:0.18rem 0.5rem; border:1px solid rgba(179,142,93,0.35); background:rgba(179,142,93,0.08); animation:pipPulse 2s ease-in-out infinite; display:inline-block; margin-top:0.3rem; }
+        @keyframes pipPulse { 0%,100%{opacity:1}50%{opacity:0.35} }
+
+        .match-venue-block { padding:1.2rem 1.4rem; border-left:1px solid rgba(179,142,93,0.08); min-width:150px; }
+        .venue-name { font-family:'JetBrains Mono',monospace; font-size:0.55rem; letter-spacing:0.18em; text-transform:uppercase; opacity:0.45; margin-bottom:0.2rem; }
+        .venue-city { font-family:'JetBrains Mono',monospace; font-size:0.45rem; letter-spacing:0.15em; text-transform:uppercase; opacity:0.2; }
+
+        .match-time-block { padding:1.2rem 1.6rem; border-left:1px solid rgba(179,142,93,0.08); text-align:right; min-width:115px; }
+        .time-display { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.4rem; color:var(--fct-gold); line-height:1; }
+        .time-ct { font-family:'JetBrains Mono',monospace; font-size:0.43rem; letter-spacing:0.2em; opacity:0.22; margin-top:0.18rem; text-transform:uppercase; }
+
+        .result-badge { font-family:'JetBrains Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; padding:0.28rem 0.6rem; border-radius:2px; white-space:nowrap; }
+        .result-w { background:rgba(74,222,128,0.08); color:#4ade80; border:1px solid rgba(74,222,128,0.18); }
+        .result-d { background:rgba(179,142,93,0.1); color:var(--fct-gold); border:1px solid rgba(179,142,93,0.2); }
+        .result-l { background:rgba(255,255,255,0.03); color:rgba(255,255,255,0.22); border:1px solid rgba(255,255,255,0.07); }
+        .result-upcoming { background:transparent; color:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.06); font-size:0.42rem; letter-spacing:0.2em; }
+
+        .match-detail-panel { max-height:0; overflow:hidden; transition:max-height 0.5s cubic-bezier(0.23,1,0.32,1); background:rgba(179,142,93,0.025); }
+        .match-detail-panel.open { max-height:180px; border-top:1px solid rgba(179,142,93,0.1); }
+        .match-detail-inner { padding:1.2rem 1.6rem 0.8rem calc(88px + 38px + 1.6rem); display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }
+        .detail-item-label { font-family:'JetBrains Mono',monospace; font-size:0.48rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--fct-gold); opacity:0.55; margin-bottom:0.3rem; }
+        .detail-item-value { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.05rem; text-transform:uppercase; }
+        .match-cta-row { padding:0.6rem 1.6rem 1.2rem calc(88px + 38px + 1.6rem); display:flex; gap:0.8rem; align-items:center; }
+        .match-ticket-btn { font-family:'JetBrains Mono',monospace; font-size:0.52rem; letter-spacing:0.22em; text-transform:uppercase; padding:0.45rem 1.1rem; border:1px solid var(--fct-gold); color:var(--fct-gold); transition:all 0.3s; text-decoration:none; background:transparent; cursor:pointer; display:inline-block; }
+        .match-ticket-btn:hover { background:var(--fct-gold); color:black; }
+        .match-ticket-btn.secondary { border-color:rgba(255,255,255,0.1); color:rgba(255,255,255,0.28); }
+        .match-ticket-btn.secondary:hover { background:rgba(255,255,255,0.05); color:white; }
+
+        .match-expand-icon { transition:transform 0.4s var(--ease-luxury); opacity:0.18; flex-shrink:0; margin-right:1.2rem; }
+        .match-hud-card.expanded .match-expand-icon { transform:rotate(180deg); opacity:0.55; }
+        .match-hud-card:hover .match-expand-icon { opacity:0.4; }
+
+        @media(max-width:768px) {
+            .match-hud-inner { grid-template-columns:72px 32px 1fr auto; }
+            .match-venue-block { display:none; }
+            .match-detail-inner { grid-template-columns:repeat(2,1fr); padding-left:1.2rem; }
+            .match-cta-row { padding-left:1.2rem; }
+        }
+
+        /* --- NEWS GRID --- */
+        .news-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 0;
+            border: 1px solid var(--fct-line);
+        }
+        .news-article-main { border-right: 1px solid var(--fct-line); padding: 2.5rem; }
+        .news-sidebar { padding: 2.5rem; display: flex; flex-direction: column; gap: 2rem; }
+        .news-sidebar-item { border-bottom: 1px solid var(--fct-line); padding-bottom: 1.5rem; cursor: pointer; transition: all 0.3s; }
+        .news-sidebar-item:last-child { border-bottom: none; }
+        .news-sidebar-item:hover { padding-left: 0.5rem; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            header { padding: 1rem 1.5rem; }
+            header.scrolled { padding: 0.75rem 1.5rem; }
+            .hidden-nav { display: none !important; }
+            #mobile-menu-btn { display: flex; align-items: center; }
+            .news-grid { grid-template-columns: 1fr; }
+            .news-article-main { border-right: none; border-bottom: 1px solid var(--fct-line); }
+            .pitch-container { display: none; }
+            .pitch-fallback { display: block !important; }
+        }
+        @media (max-width: 640px) {
+            .hero-title { font-size: 3.5rem; }
+        }
+
+        /* ═══════════════ ARMORY 3D SHOWCASE ═══════════════ */
+
+        /* Ambient background for the Armory */
+        #shop {
+            background: #000;
+            overflow-x: hidden;
+        }
+
+        /* Hero banner */
+        .armory-hero {
+            position: relative;
+            min-height: 60vh;
+            display: flex;
+            align-items: flex-end;
+            padding: 4rem 0 5rem;
+            overflow: hidden;
+        }
+        .armory-hero-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(179,142,93,0.12) 0%, transparent 70%),
+                        radial-gradient(ellipse 50% 50% at 20% 80%, rgba(179,142,93,0.06) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .armory-grid-lines {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(179,142,93,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(179,142,93,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+        .armory-hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: clamp(5rem, 14vw, 13rem);
+            line-height: 0.88;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #fff 0%, rgba(179,142,93,0.8) 50%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Category Filter Pills */
+        .armory-filter {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .filter-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            padding: 0.6rem 1.4rem;
+            border: 1px solid rgba(179,142,93,0.25);
+            color: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .filter-pill::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--fct-gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s cubic-bezier(0.23,1,0.32,1);
+            z-index: -1;
+        }
+        .filter-pill:hover, .filter-pill.active {
+            color: black;
+            border-color: var(--fct-gold);
+        }
+        .filter-pill:hover::before, .filter-pill.active::before { transform: scaleX(1); }
+
+        /* 3D Product Card */
+        .armory-product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1px;
+            background: rgba(179,142,93,0.08);
+        }
+
+        .product-card-3d {
+            background: #000;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            group: true;
+        }
+        .product-card-3d .card-inner {
+            position: relative;
+            padding: 2.5rem 2rem 2rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.6s cubic-bezier(0.23,1,0.32,1);
+        }
+        .product-card-3d:hover .card-inner {
+            transform: translateY(-4px);
+        }
+
+        /* Animated gold border sweep on hover */
+        .product-card-3d::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid transparent;
+            background: linear-gradient(#000, #000) padding-box,
+                        linear-gradient(135deg, var(--fct-gold), transparent 50%) border-box;
+            opacity: 0;
+            transition: opacity 0.5s var(--ease-luxury);
+            pointer-events: none;
+            z-index: 2;
+        }
+        .product-card-3d:hover::before { opacity: 1; }
+
+        /* Glow pulse behind the image */
+        .product-card-3d::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 40%;
+            background: radial-gradient(ellipse at center bottom, rgba(179,142,93,0.18) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s var(--ease-luxury);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .product-card-3d:hover::after { opacity: 1; }
+
+        /* Product image stage — 3D floating effect */
+        .product-stage {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1/1;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 800px;
+        }
+        .product-img-wrap {
+            width: 85%;
+            height: 85%;
+            position: relative;
+            transition: transform 0.7s cubic-bezier(0.23,1,0.32,1), filter 0.5s;
+            transform-style: preserve-3d;
+            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.8));
+        }
+        .product-card-3d:hover .product-img-wrap {
+            transform: translateY(-10px) rotateX(4deg) rotateY(-3deg) scale(1.04);
+            filter: drop-shadow(0 35px 60px rgba(0,0,0,0.9)) drop-shadow(0 0 40px rgba(179,142,93,0.15));
+        }
+        .product-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Reflection / ground shadow */
+        .product-reflection {
+            position: absolute;
+            bottom: -5%;
+            left: 10%;
+            width: 80%;
+            height: 30px;
+            background: radial-gradient(ellipse, rgba(179,142,93,0.15) 0%, transparent 70%);
+            filter: blur(8px);
+            transition: opacity 0.5s, transform 0.7s cubic-bezier(0.23,1,0.32,1);
+            opacity: 0.5;
+        }
+        .product-card-3d:hover .product-reflection {
+            opacity: 1;
+            transform: scaleX(0.85);
+        }
+
+        /* Badge (new / limited / featured) */
+        .product-badge {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            padding: 0.35rem 0.7rem;
+            z-index: 10;
+        }
+        .badge-gold { background: var(--fct-gold); color: black; }
+        .badge-outline { border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.4); }
+        .badge-champion { background: linear-gradient(135deg, #B38E5D, #d4aa72); color: black; }
+
+        /* Product info */
+        .product-info { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; }
+        .product-category-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(179,142,93,0.6);
+            margin-bottom: 0.4rem;
+        }
+        .product-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.4rem;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+            color: white;
+            margin-bottom: 0.75rem;
+        }
+        .product-price-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(179,142,93,0.12);
+        }
+        .product-price {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-style: italic;
+            color: var(--fct-gold);
+        }
+        .product-price-from {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.2em;
+            opacity: 0.3;
+            text-transform: uppercase;
+            margin-right: 0.3rem;
+        }
+        .product-cta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            transition: color 0.3s;
+        }
+        .product-card-3d:hover .product-cta { color: var(--fct-gold); }
+
+        /* Featured hero product (large card) */
+        .product-card-featured {
+            grid-column: span 2;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            min-height: 500px;
+        }
+        .product-card-featured::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid transparent;
+            background: linear-gradient(#000, #000) padding-box,
+                        linear-gradient(135deg, var(--fct-gold), transparent 50%) border-box;
+            opacity: 0;
+            transition: opacity 0.5s var(--ease-luxury);
+            pointer-events: none;
+            z-index: 2;
+        }
+        .product-card-featured:hover::before { opacity: 1; }
+        .featured-img-container {
+            position: relative;
+            height: 100%;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            overflow: hidden;
+        }
+        .featured-glow {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(179,142,93,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .featured-img {
+            width: 80%;
+            max-width: 300px;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.8s cubic-bezier(0.23,1,0.32,1), filter 0.5s;
+            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.8));
+        }
+        .product-card-featured:hover .featured-img {
+            transform: translateY(-12px) scale(1.05);
+            filter: drop-shadow(0 45px 80px rgba(0,0,0,0.9)) drop-shadow(0 0 50px rgba(179,142,93,0.2));
+        }
+        .featured-info {
+            padding: 3.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        .featured-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: clamp(2.5rem, 4vw, 4rem);
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+        .featured-desc {
+            font-size: 0.75rem;
+            opacity: 0.4;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+        .featured-price {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-style: italic;
+            color: var(--fct-gold);
+            line-height: 1;
+        }
+
+        /* Member perk banner */
+        .armory-perk-banner {
+            position: relative;
+            overflow: hidden;
+            padding: 2.5rem 3rem;
+            border: 1px solid rgba(179,142,93,0.2);
+            background: linear-gradient(135deg, rgba(179,142,93,0.06) 0%, transparent 50%, rgba(179,142,93,0.04) 100%);
+        }
+        .armory-perk-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--fct-gold), transparent);
+            animation: sweepLine 4s ease-in-out infinite;
+        }
+        @keyframes sweepLine {
+            0% { left: -60%; }
+            100% { left: 160%; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .armory-product-grid { grid-template-columns: repeat(2, 1fr); }
+            .product-card-featured { grid-column: span 2; grid-template-columns: 1fr; }
+            .featured-img-container { min-height: 280px; padding: 2rem; }
+            .featured-info { padding: 2rem; }
+            .featured-name { font-size: 2.5rem; }
+        }
+        @media (max-width: 480px) {
+            .armory-product-grid { grid-template-columns: 1fr; }
+            .product-card-featured { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="text-center">
+            <div class="loader-dial mx-auto mb-8">
+                <div class="loader-hand"></div>
+            </div>
+            <div class="mono opacity-40 text-[10px] mt-4">FC TULSA // INITIALIZING CORE</div>
+        </div>
+    </div>
+
+    <!-- MOBILE NAV OVERLAY -->
+    <div id="mobile-nav">
+        <span id="mobile-close" onclick="closeMobileNav()">[ CLOSE ]</span>
+        <span class="nav-item" onclick="showPage('home'); closeMobileNav()">Home</span>
+        <span class="nav-item" onclick="showPage('tickets'); closeMobileNav()">Tickets</span>
+        <span class="nav-item" onclick="showPage('schedule'); closeMobileNav()">Schedule</span>
+        <span class="nav-item" onclick="showPage('roster'); closeMobileNav()">Roster</span>
+        <span class="nav-item" onclick="showPage('news'); closeMobileNav()">News</span>
+        <span class="nav-item" onclick="showPage('club'); closeMobileNav()">Atelier</span>
+        <span class="nav-item" onclick="showPage('shop'); closeMobileNav()">Armory</span>
+    </div>
+
+    <!-- PLAYER PROFILE OVERLAY -->
+    <div id="player-profile-view">
+        <div class="p-8 md:p-16 lg:p-24 relative max-w-7xl mx-auto">
+            <button onclick="closeProfile()" class="fixed top-8 right-8 md:top-12 md:right-12 mono text-[10px] text-[#B38E5D] hover:text-white transition-colors z-[2010] font-bold bg-black/50 px-3 py-2 border border-[#B38E5D]/30">[ DISCONNECT ]</button>
+
+            <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start pt-16 lg:pt-0">
+                <div class="lg:sticky lg:top-24">
+                    <div class="mono text-[#B38E5D] mb-6 tracking-[0.4em] font-bold text-[9px]">TACTICAL_FILE // <span id="p-pos-tag">PLAYER</span></div>
+                    <h2 class="text-6xl md:text-8xl lg:text-9xl editorial-title leading-none mb-10" id="p-name">Player Name</h2>
+
+                    <div class="grid grid-cols-2 gap-px bg-white/5 border border-white/5 mb-10">
+                        <div class="p-6 bg-black">
+                            <span class="mono text-[8px] opacity-30 mb-2 block">Height</span>
+                            <div class="text-xl italic serif" id="p-height">—</div>
+                        </div>
+                        <div class="p-6 bg-black border-l border-white/5">
+                            <span class="mono text-[8px] opacity-30 mb-2 block">Weight</span>
+                            <div class="text-xl italic serif" id="p-weight">—</div>
+                        </div>
+                        <div class="p-6 bg-black border-t border-white/5">
+                            <span class="mono text-[8px] opacity-30 mb-2 block">DOB</span>
+                            <div class="text-xl italic serif" id="p-dob">—</div>
+                        </div>
+                        <div class="p-6 bg-black border-t border-l border-white/5">
+                            <span class="mono text-[8px] opacity-30 mb-2 block">Origin</span>
+                            <div class="text-xl italic serif" id="p-home">—</div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-6 flex-wrap">
+                        <a href="#" class="mono text-[9px] border border-white/10 px-4 py-3 hover:border-[#B38E5D] transition-all uppercase tracking-widest">IG_UPLINK</a>
+                        <a href="#" class="mono text-[9px] border border-white/10 px-4 py-3 hover:border-[#B38E5D] transition-all uppercase tracking-widest">X_CHANNEL</a>
+                    </div>
+                </div>
+
+                <div class="pt-8 lg:pt-24">
+                    <div class="border-t border-white/10 pt-10">
+                        <h3 class="text-4xl editorial-title mb-10">Bio_Analysis</h3>
+                        <div class="space-y-10 text-sm leading-relaxed opacity-60 uppercase font-light tracking-[0.15em]" id="p-bio"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header id="main-header">
+        <div class="group flex items-center gap-5 cursor-pointer" onclick="showPage('home')">
+            <div class="relative w-10 h-10 border border-white/20 flex items-center justify-center">
+                <img src="Placeholder.png" alt="FC Tulsa Crest" class="w-6 opacity-80 group-hover:opacity-100 transition-all">
+            </div>
+            <div class="leading-none hidden xl:block">
+                <span class="block mono text-[10px] text-white">FC TULSA</span>
+                <span class="mono text-[7px] opacity-30">OPERATIONAL_v2.6.5</span>
+            </div>
+        </div>
+
+        <nav class="hidden-nav hidden lg:flex gap-10">
+            <span class="nav-item" onclick="showPage('tickets')">Tickets</span>
+            <span class="nav-item" onclick="showPage('schedule')">Schedule</span>
+            <span class="nav-item" onclick="showPage('roster')">Roster</span>
+            <span class="nav-item" onclick="showPage('news')">News</span>
+            <span class="nav-item" onclick="showPage('club')">Atelier</span>
+            <span class="nav-item" onclick="showPage('shop')">Armory</span>
+        </nav>
+
+        <div class="flex items-center gap-5">
+            <a href="https://www.fctulsa.com/espanol/" class="mono text-[8px] opacity-40 hover:opacity-100 hidden sm:block">ES</a>
+            <button onclick="showPage('tickets')" class="btn-gold !px-5 !py-2 !text-[8px]">Memberships</button>
+            <div id="mobile-menu-btn" class="lg:hidden flex-col gap-1.5 p-2" onclick="openMobileNav()">
+                <div class="w-5 h-px bg-white/60"></div>
+                <div class="w-5 h-px bg-white/60"></div>
+                <div class="w-3 h-px bg-[#B38E5D]"></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ═══════════════ HOME ═══════════════ -->
+        <div id="home" class="page-content active">
+            <section class="hero">
+                <div class="vignette absolute inset-0 z-10"></div>
+                <video autoplay muted loop playsinline poster="https://www.fctulsa.com/wp-content/uploads/sites/39/2026/02/Website-Hype-Video-26-2.mp4" class="hero-video">
+                    <source src="https://www.fctulsa.com/wp-content/uploads/sites/39/2026/02/Website-Hype-Video-26-2.mp4" type="video/mp4">
+                </video>
+                <div class="hero-content">
+                    <div class="mono text-[9px] mb-6 text-[#B38E5D] tracking-[0.6em]">EST. 1978 // OKLAHOMA</div>
+                    <h1 class="hero-title text-white drop-shadow-2xl">
+                        FC TULSA <br><span class="font-bold not-italic">PROFESSIONAL SOCCER.</span>
+                    </h1>
+                    <p class="serif text-2xl italic opacity-50 mt-6 mb-10 uppercase tracking-widest">Win with the Western Conference Champs</p>
+                    <div class="flex flex-col sm:flex-row gap-5 justify-center">
+                        <button onclick="showPage('tickets')" class="btn-gold">Explore 2026</button>
+                        <button onclick="showPage('roster')" class="btn-outline">Personnel Archive</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick-hit stats bar -->
+            <div class="bg-black border-t border-b border-[#B38E5D]/15 px-12 py-6">
+                <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5">
+                    <div class="bg-black p-8 text-center">
+                        <div class="text-5xl editorial-title text-[#B38E5D]">2025</div>
+                        <div class="mono text-[8px] opacity-30 mt-2">Western Conference Champions</div>
+                    </div>
+                    <div class="bg-black p-8 text-center border-l border-white/5">
+                        <div class="text-5xl editorial-title text-white">USL</div>
+                        <div class="mono text-[8px] opacity-30 mt-2">Championship Division</div>
+                    </div>
+                    <div class="bg-black p-8 text-center border-l border-white/5">
+                        <div class="text-5xl editorial-title text-white">ONEOK</div>
+                        <div class="mono text-[8px] opacity-30 mt-2">Field // Tulsa, Oklahoma</div>
+                    </div>
+                    <div class="bg-black p-8 text-center border-l border-white/5">
+                        <div class="text-5xl editorial-title text-white">918</div>
+                        <div class="mono text-[8px] opacity-30 mt-2">Tulsa Area Code</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured news teaser on home -->
+            <div class="bg-[#080808] px-12 py-24">
+                <div class="max-w-7xl mx-auto">
+                    <div class="flex justify-between items-end mb-12">
+                        <h2 class="text-7xl editorial-title leading-none">Latest<br>Dispatches</h2>
+                        <button onclick="showPage('news')" class="btn-outline text-[10px]">Full Archive →</button>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-px bg-white/5 border border-white/5">
+                        <div class="bg-[#080808] p-8 hover:bg-[#0e0e0e] transition-all cursor-pointer group" onclick="showPage('news')">
+                            <div class="mono text-[#B38E5D] text-[8px] mb-4">FEB 23, 2026 // TRANSFER</div>
+                            <h3 class="text-3xl editorial-title mb-4 group-hover:text-[#B38E5D] transition-colors">Pierre Protocols Active</h3>
+                            <p class="text-sm opacity-40 leading-relaxed uppercase tracking-widest font-light">Secured on loan from Vancouver Whitecaps FC.</p>
+                        </div>
+                        <div class="bg-[#080808] p-8 hover:bg-[#0e0e0e] transition-all cursor-pointer group border-l border-white/5" onclick="showPage('roster')">
+                            <div class="mono text-[#B38E5D] text-[8px] mb-4">2026 SEASON // SQUAD</div>
+                            <h3 class="text-3xl editorial-title mb-4 group-hover:text-[#B38E5D] transition-colors">4-3-3 Deployment Confirmed</h3>
+                            <p class="text-sm opacity-40 leading-relaxed uppercase tracking-widest font-light">Head Coach Luke Spencer locks the tactical schema.</p>
+                        </div>
+                        <div class="bg-[#080808] p-8 hover:bg-[#0e0e0e] transition-all cursor-pointer group border-l border-white/5" onclick="showPage('tickets')">
+                            <div class="mono text-[#B38E5D] text-[8px] mb-4">MEMBERSHIPS // 2026</div>
+                            <h3 class="text-3xl editorial-title mb-4 group-hover:text-[#B38E5D] transition-colors">Season Packages Live</h3>
+                            <p class="text-sm opacity-40 leading-relaxed uppercase tracking-widest font-light">From $257. Exclusive events + 20% Armory credit.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════ ROSTER ═══════════════ -->
+        <div id="roster" class="page-content pt-40 pb-20 px-6 md:px-12 bg-black">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-6">
+                    <h2 class="text-7xl md:text-9xl editorial-title leading-none">Squad <br>Terminal</h2>
+                    <div class="text-left md:text-right">
+                        <div class="mono text-[9px] text-[#B38E5D] mb-3 tracking-[0.4em]">Field_Command // v.2026</div>
+                        <div class="text-[9px] italic opacity-30 uppercase tracking-widest">Strategic 4-3-3 Deployment</div>
+                    </div>
+                </div>
+
+                <!-- Tactical Pitch (desktop) -->
+                <div id="tactical-pitch" class="pitch-container mb-16">
+                    <div class="pitch-corner pitch-corner-tl"></div>
+                    <div class="pitch-corner pitch-corner-tr"></div>
+                    <div class="pitch-corner pitch-corner-bl"></div>
+                    <div class="pitch-corner pitch-corner-br"></div>
+                    <div class="pitch-center-line"></div>
+                    <div class="pitch-center-circle"></div>
+                    <div class="pitch-box pitch-box-top"></div>
+                    <div class="pitch-box pitch-box-bottom"></div>
+                </div>
+
+                <!-- Mobile fallback: show starters as cards -->
+                <div class="pitch-fallback hidden mb-16">
+                    <div class="mono text-[9px] opacity-20 mb-6 tracking-[1.5em] text-center">Starting_XI</div>
+                    <div id="mobile-starters-grid" class="grid grid-cols-2 gap-px bg-white/5 border border-white/5"></div>
+                </div>
+
+                <!-- Reserve Grid -->
+                <div class="mono text-[9px] opacity-20 mb-10 tracking-[1.5em] text-center uppercase">Reserve_Squad_Index</div>
+                <div id="reserve-grid-container" class="space-y-16"></div>
+
+                <!-- Staff Section -->
+                <div id="staff-section" class="mt-32">
+                    <div class="mono text-[9px] text-[#B38E5D] mb-10 tracking-[0.6em] text-center">Command_Directorate</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5 border border-white/5">
+
+                        <!-- Executive Leadership -->
+                        <div class="tactical-card p-10 bg-black">
+                            <h4 class="mono text-[10px] text-[#B38E5D] mb-10 tracking-[0.5em]">Executive_Leadership</h4>
+                            <div class="space-y-8">
+                                <div class="flex items-center gap-6 group">
+                                    <div class="w-20 h-20 flex-shrink-0 bg-zinc-900 border border-white/5 overflow-hidden grayscale group-hover:grayscale-0 group-hover:border-[#B38E5D] transition-all relative">
+                                        <img src="Ryan Craft.png" alt="Ryan Craft" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                        <div class="absolute inset-0 bg-black/40 group-hover:opacity-0 transition-opacity"></div>
+                                    </div>
+                                    <div class="border-l border-white/10 pl-5">
+                                        <h5 class="text-xl italic font-light uppercase">Ryan Craft</h5>
+                                        <p class="mono text-[8px] opacity-40 mt-1">Co-Chairman</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6 group">
+                                    <div class="w-20 h-20 flex-shrink-0 bg-zinc-900 border border-white/5 overflow-hidden grayscale group-hover:grayscale-0 group-hover:border-[#B38E5D] transition-all relative">
+                                        <img src="J.W Craft.png" alt="J.W. Craft" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                        <div class="absolute inset-0 bg-black/40 group-hover:opacity-0 transition-opacity"></div>
+                                    </div>
+                                    <div class="border-l border-white/10 pl-5">
+                                        <h5 class="text-xl italic font-light uppercase">J.W. Craft</h5>
+                                        <p class="mono text-[8px] opacity-40 mt-1">Co-Chairman</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6 group">
+                                    <div class="w-20 h-20 flex-shrink-0 bg-zinc-900 border border-white/5 overflow-hidden grayscale group-hover:grayscale-0 group-hover:border-[#B38E5D] transition-all relative">
+                                        <img src="Kyle Craft.png" alt="Kyle Craft" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                        <div class="absolute inset-0 bg-black/40 group-hover:opacity-0 transition-opacity"></div>
+                                    </div>
+                                    <div class="border-l border-white/10 pl-5">
+                                        <h5 class="text-xl italic font-light uppercase">Kyle Craft</h5>
+                                        <p class="mono text-[8px] opacity-40 mt-1">Chief Executive Officer</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Technical Operations -->
+                        <div class="tactical-card p-10 bg-black border-l border-white/10">
+                            <h4 class="mono text-[10px] text-[#B38E5D] mb-10 tracking-[0.5em]">Technical_Operations</h4>
+                            <div class="space-y-8">
+                                <div class="flex items-center gap-6 group">
+                                    <div class="w-20 h-20 flex-shrink-0 bg-zinc-900 border border-white/5 overflow-hidden grayscale group-hover:grayscale-0 group-hover:border-[#B38E5D] transition-all">
+                                        <img src="Caleb Sewell.png" alt="Caleb Sewell" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                    </div>
+                                    <div class="border-l border-[#B38E5D] pl-5">
+                                        <h5 class="text-xl italic font-light uppercase">Caleb Sewell</h5>
+                                        <p class="mono text-[8px] opacity-40 mt-1">Sporting Director / GM</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6 group">
+                                    <div class="w-20 h-20 flex-shrink-0 bg-zinc-900 border border-white/5 overflow-hidden grayscale group-hover:grayscale-0 group-hover:border-[#B38E5D] transition-all">
+                                        <img src="Luke Spencer.png" alt="Luke Spencer" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                    </div>
+                                    <div class="border-l border-[#B38E5D] pl-5">
+                                        <h5 class="text-xl italic font-light uppercase">Luke Spencer</h5>
+                                        <p class="mono text-[8px] opacity-40 mt-1">Head Coach</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6 group">
+                                    <div class="w-20 h-20 flex-shrink-0 bg-zinc-900 border border-white/5 overflow-hidden grayscale group-hover:grayscale-0 group-hover:border-[#B38E5D] transition-all">
+                                        <img src="Alexis Vizarelis.png" alt="Alexis Vizarelis" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                    </div>
+                                    <div class="border-l border-[#B38E5D] pl-5">
+                                        <h5 class="text-xl italic font-light uppercase">Alexis Vizarelis</h5>
+                                        <p class="mono text-[8px] opacity-40 mt-1">Assistant Coach</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6 group">
+                                    <div class="w-20 h-20 flex-shrink-0 bg-zinc-900 border border-white/5 overflow-hidden grayscale group-hover:grayscale-0 group-hover:border-[#B38E5D] transition-all">
+                                        <img src="Gabriel Zapponi.png" alt="Gabriel Zapponi" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                    </div>
+                                    <div class="border-l border-[#B38E5D] pl-5">
+                                        <h5 class="text-xl italic font-light uppercase">Gabriel Zapponi</h5>
+                                        <p class="mono text-[8px] opacity-40 mt-1">Assistant Coach</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6 group">
+                                    <div class="w-20 h-20 flex-shrink-0 bg-zinc-900 border border-white/5 overflow-hidden grayscale group-hover:grayscale-0 group-hover:border-[#B38E5D] transition-all">
+                                        <img src="Leandro Spinola.png" alt="Leandro Spinola" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                    </div>
+                                    <div class="border-l border-[#B38E5D] pl-5">
+                                        <h5 class="text-xl italic font-light uppercase">Leandro Spinola</h5>
+                                        <p class="mono text-[8px] opacity-40 mt-1">Sports Science Director</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6 group cursor-pointer" onclick="initiateExpansion('Destiny Lalaguna', 'ATHLETIC TRAINER', '—', '—', '—', 'USA', 'PHOENIX RISING FC', this)">
+                                    <div class="w-20 h-20 flex-shrink-0 bg-zinc-900 border border-white/5 overflow-hidden grayscale group-hover:grayscale-0 group-hover:border-[#B38E5D] transition-all">
+                                        <img src="Destiny Lalaguna.png" alt="Destiny Lalaguna" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                    </div>
+                                    <div class="border-l border-[#B38E5D] pl-5">
+                                        <h5 class="text-xl italic font-light uppercase">Destiny Lalaguna</h5>
+                                        <p class="mono text-[8px] opacity-40 mt-1">Head Athletic Trainer</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6 group">
+                                    <div class="w-20 h-20 flex-shrink-0 bg-zinc-900 border border-white/5 overflow-hidden grayscale group-hover:grayscale-0 group-hover:border-[#B38E5D] transition-all">
+                                        <img src="Boby Carreno.png" alt="Boby Carreño" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                    </div>
+                                    <div class="border-l border-[#B38E5D] pl-5">
+                                        <h5 class="text-xl italic font-light uppercase">Boby Carreño</h5>
+                                        <p class="mono text-[8px] opacity-40 mt-1">Equipment Manager</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6 group">
+                                    <div class="w-20 h-20 flex-shrink-0 bg-zinc-900 border border-white/5 overflow-hidden grayscale group-hover:grayscale-0 group-hover:border-[#B38E5D] transition-all">
+                                        <img src="Alnoor Hasham.png" alt="Alnoor Hasham" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                    </div>
+                                    <div class="border-l border-[#B38E5D] pl-5">
+                                        <h5 class="text-xl italic font-light uppercase">Alnoor Hasham</h5>
+                                        <p class="mono text-[8px] opacity-40 mt-1">Director of Soccer Administration</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════ TICKETS ═══════════════ -->
+        <div id="tickets" class="page-content pt-40 pb-20 px-6 md:px-12 bg-black">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-7xl md:text-9xl editorial-title mb-6 leading-none font-light">Purchase<br>Portal</h2>
+                <div class="mono text-[9px] text-[#B38E5D] mb-20 tracking-[0.4em]">Secure your position in the 918 // 2026 Season</div>
+
+                <div class="grid md:grid-cols-3 gap-px bg-white/5 border border-white/5">
+                    <div class="tactical-card p-12 bg-black">
+                        <div class="mono text-[8px] text-[#B38E5D] mb-4">TIER_01</div>
+                        <h3 class="text-4xl editorial-title mb-4 uppercase">Memberships</h3>
+                        <div class="text-5xl editorial-title text-[#B38E5D] mb-2">$257</div>
+                        <div class="mono text-[8px] opacity-30 mb-8">Starting from</div>
+                        <ul class="space-y-3 mb-12 text-sm opacity-50 font-light uppercase tracking-widest">
+                            <li class="flex items-center gap-3"><span class="text-[#B38E5D]">+</span> All home match access</li>
+                            <li class="flex items-center gap-3"><span class="text-[#B38E5D]">+</span> Exclusive member events</li>
+                            <li class="flex items-center gap-3"><span class="text-[#B38E5D]">+</span> 20% Armory store credit</li>
+                            <li class="flex items-center gap-3"><span class="text-[#B38E5D]">+</span> Priority seating selection</li>
+                        </ul>
+                        <a href="https://seatgeek.com/fctulsa" target="_blank" class="btn-gold w-full block text-center">Establish Link</a>
+                    </div>
+                    <div class="tactical-card p-12 bg-black border-l border-white/5">
+                        <div class="mono text-[8px] text-[#B38E5D] mb-4">TIER_02</div>
+                        <h3 class="text-4xl editorial-title mb-4 uppercase">Single Match</h3>
+                        <div class="text-5xl editorial-title text-white mb-2">Flex</div>
+                        <div class="mono text-[8px] opacity-30 mb-8">Per match pricing</div>
+                        <ul class="space-y-3 mb-12 text-sm opacity-50 font-light uppercase tracking-widest">
+                            <li class="flex items-center gap-3"><span class="text-[#B38E5D]">+</span> Choose your matches</li>
+                            <li class="flex items-center gap-3"><span class="text-[#B38E5D]">+</span> General admission available</li>
+                            <li class="flex items-center gap-3"><span class="text-[#B38E5D]">+</span> Premium sections offered</li>
+                        </ul>
+                        <a href="https://seatgeek.com/fctulsa" target="_blank" class="btn-outline w-full block text-center">Browse Matches</a>
+                    </div>
+                    <div class="tactical-card p-12 bg-black border-l border-white/5">
+                        <div class="mono text-[8px] text-[#B38E5D] mb-4">TIER_03</div>
+                        <h3 class="text-4xl editorial-title mb-4 uppercase">Group Access</h3>
+                        <div class="text-5xl editorial-title text-white mb-2">10+</div>
+                        <div class="mono text-[8px] opacity-30 mb-8">10 or more guests</div>
+                        <ul class="space-y-3 mb-12 text-sm opacity-50 font-light uppercase tracking-widest">
+                            <li class="flex items-center gap-3"><span class="text-[#B38E5D]">+</span> Discounted group rates</li>
+                            <li class="flex items-center gap-3"><span class="text-[#B38E5D]">+</span> Reserved block seating</li>
+                            <li class="flex items-center gap-3"><span class="text-[#B38E5D]">+</span> Dedicated group liaison</li>
+                        </ul>
+                        <a href="mailto:info@fctulsa.com" class="btn-outline w-full block text-center">Contact Group Sales</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════ SCHEDULE ═══════════════ -->
+        <div id="schedule" class="page-content pb-20 bg-black">
+
+            <!-- Champions Banner -->
+            <div class="relative w-full overflow-hidden" style="margin-top:0;">
+                <a href="https://seatgeek.com/fctulsa" target="_blank" class="block relative group">
+                    <img
+                        src="champs_banner.webp"
+                        alt="FC Tulsa — 2025 USL Western Conference Champions. We Want More."
+                        class="w-full object-cover"
+                        style="max-height:520px; object-position:center top; display:block;"
+                    >
+                    <!-- Subtle top fade so header nav blends in -->
+                    <div style="position:absolute;top:0;left:0;right:0;height:100px;background:linear-gradient(to bottom,rgba(0,0,0,0.55),transparent);pointer-events:none;"></div>
+                    <!-- Bottom fade into the page -->
+                    <div style="position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,#000,transparent);pointer-events:none;"></div>
+                    <!-- Hover CTA overlay -->
+                    <div class="absolute inset-0 flex items-end justify-end pb-8 pr-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="pointer-events:none;">
+                        <span class="btn-gold" style="pointer-events:auto;">Get 2026 Tickets →</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="px-6 md:px-12">
+            <div class="max-w-7xl mx-auto">
+
+                <!-- Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 pt-10">
+                    <div>
+                        <div class="mono text-[9px] text-[#B38E5D] mb-4 tracking-[0.5em]">USL Championship // Western Conference // 2026</div>
+                        <h2 class="text-7xl md:text-9xl editorial-title leading-none font-light">Match<br>Calendar</h2>
+                    </div>
+                    <div class="text-left md:text-right">
+                        <div class="mono text-[8px] opacity-20 mb-1 tracking-widest">Season Record</div>
+                        <div id="season-record-display" class="editorial-title text-4xl italic opacity-80">— — —</div>
+                    </div>
+                </div>
+
+                <!-- Season Record Bar -->
+                <div class="record-bar mb-10" id="record-bar">
+                    <div class="record-stat">
+                        <div class="record-num wins" id="rec-w">0</div>
+                        <div class="record-label">Wins</div>
+                    </div>
+                    <div class="record-stat">
+                        <div class="record-num draws" id="rec-d">0</div>
+                        <div class="record-label">Draws</div>
+                    </div>
+                    <div class="record-stat">
+                        <div class="record-num losses" id="rec-l">0</div>
+                        <div class="record-label">Losses</div>
+                    </div>
+                    <div class="record-stat">
+                        <div class="record-num" id="rec-gf" style="font-size:clamp(1.4rem,3vw,2.2rem);">0</div>
+                        <div class="record-label">Goals For</div>
+                    </div>
+                    <div class="record-stat">
+                        <div class="record-num" id="rec-ga" style="font-size:clamp(1.4rem,3vw,2.2rem); color:rgba(255,255,255,0.3);">0</div>
+                        <div class="record-label">Goals Against</div>
+                    </div>
+                    <div class="record-stat" style="flex:1.4;">
+                        <div class="record-num" id="rec-pts" style="color:var(--fct-gold);">0</div>
+                        <div class="record-label">Points</div>
+                    </div>
+                    <div class="record-stat" style="flex:1.4;">
+                        <div class="record-num" id="rec-pos" style="font-size:clamp(1.4rem,3vw,2rem);">—</div>
+                        <div class="record-label">Position</div>
+                    </div>
+                </div>
+
+                <!-- Match HUD List -->
+                <div class="border border-white/5" id="schedule-list">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div class="mt-6 flex gap-4 flex-wrap">
+                    <a href="https://www.fctulsa.com/schedule/" target="_blank" class="btn-outline">Full Schedule ↗</a>
+                    <a href="https://seatgeek.com/fctulsa" target="_blank" class="btn-gold">Get Tickets</a>
+                </div>
+            </div>
+            </div><!-- /px wrapper -->
+        </div>
+
+        <!-- ═══════════════ NEWS ═══════════════ -->
+        <div id="news" class="page-content pt-40 pb-20 px-6 md:px-12 bg-[#080808]">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-20">
+                    <h2 class="text-7xl md:text-[10rem] editorial-title text-white tracking-tighter leading-none uppercase font-bold">The Bulletin</h2>
+                    <div class="flex flex-col md:flex-row justify-between border-t border-white/20 mt-10 pt-5 mono text-[9px] opacity-30 tracking-[0.4em] gap-3">
+                        <span>TULSA_OKLAHOMA // ATELIER_DATA</span>
+                        <span>FC TULSA // 2026 CAMPAIGN</span>
+                    </div>
+                </div>
+
+                <div class="news-grid mb-16">
+                    <div class="news-article-main">
+                        <img src="https://www.fctulsa.com/wp-content/uploads/sites/39/2026/02/02_23_26_NelsonP_Signed-WebV4.png?w=1024" alt="Nelson Pierre signs with FC Tulsa" class="w-full grayscale hover:grayscale-0 transition-all duration-700 mb-8 aspect-video object-cover">
+                        <div class="mono text-[#B38E5D] text-[8px] mb-4">FEB 23, 2026 // SQUAD_UPDATE</div>
+                        <h3 class="text-5xl md:text-7xl editorial-title mb-6 leading-none uppercase">Pierre Protocols Active</h3>
+                        <p class="text-base opacity-50 leading-relaxed uppercase tracking-widest font-light mb-8">Secured on loan from Vancouver Whitecaps FC to anchor the vertical offensive scheme. The 21-year-old winger joins the 918 terminal as FC Tulsa defend their Western Conference title.</p>
+                        <button class="btn-gold text-[9px]">Read Dispatch</button>
+                    </div>
+                    <div class="news-sidebar">
+                        <div class="news-sidebar-item">
+                            <div class="mono text-[#B38E5D] text-[7px] mb-2">TACTICAL // 2026</div>
+                            <h4 class="text-2xl editorial-title leading-tight mb-2">4-3-3 Deployment Locked</h4>
+                            <p class="text-xs opacity-30 uppercase tracking-widest font-light">Coach Spencer confirms the tactical schema for title defense.</p>
+                        </div>
+                        <div class="news-sidebar-item">
+                            <div class="mono text-[#B38E5D] text-[7px] mb-2">PERSONNEL // JAN 2026</div>
+                            <h4 class="text-2xl editorial-title leading-tight mb-2">Cissoko Named Captain</h4>
+                            <p class="text-xs opacity-30 uppercase tracking-widest font-light">Abdoulaye Cissoko leads from the back for the second consecutive campaign.</p>
+                        </div>
+                        <div class="news-sidebar-item">
+                            <div class="mono text-[#B38E5D] text-[7px] mb-2">TRAINING GROUND // 2026</div>
+                            <h4 class="text-2xl editorial-title leading-tight mb-2">Spring Camp Underway</h4>
+                            <p class="text-xs opacity-30 uppercase tracking-widest font-light">Full squad reports to preseason. Fitness metrics tracking optimal.</p>
+                        </div>
+                        <div class="news-sidebar-item">
+                            <div class="mono text-[#B38E5D] text-[7px] mb-2">COMMUNITY // 2026</div>
+                            <h4 class="text-2xl editorial-title leading-tight mb-2">918 Community Outreach</h4>
+                            <p class="text-xs opacity-30 uppercase tracking-widest font-light">Club engagement programs expand across Tulsa metro area.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <a href="https://www.fctulsa.com/news/" target="_blank" class="btn-outline">Full News Archive</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════ ATELIER (CLUB) ═══════════════ -->
+        <div id="club" class="page-content pt-40 pb-20 px-6 md:px-12 bg-[#080808]">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-7xl md:text-9xl editorial-title mb-6 leading-none font-light">Le<br>Atelier</h2>
+                <div class="mono text-[9px] text-[#B38E5D] mb-20 tracking-[0.4em]">FC Tulsa // Club History & Culture</div>
+
+                <div class="grid md:grid-cols-2 gap-px bg-white/5 border border-white/5 mb-12">
+                    <div class="bg-[#080808] p-12">
+                        <div class="mono text-[8px] text-[#B38E5D] mb-6">ORIGINS</div>
+                        <h3 class="text-5xl editorial-title mb-8 uppercase">Est. 1978</h3>
+                        <p class="text-sm opacity-50 leading-relaxed uppercase tracking-widest font-light mb-6">FC Tulsa carries a rich legacy rooted in the heart of Oklahoma. Representing the 918, the club has become a cornerstone of professional soccer in the American Midwest.</p>
+                        <p class="text-sm opacity-50 leading-relaxed uppercase tracking-widest font-light">Competing in the USL Championship — one of the premier second-division leagues in North America — FC Tulsa plays home matches at ONEOK Field in downtown Tulsa.</p>
+                    </div>
+                    <div class="bg-[#080808] p-12 border-l border-white/5">
+                        <div class="mono text-[8px] text-[#B38E5D] mb-6">HONORS</div>
+                        <h3 class="text-5xl editorial-title mb-8 uppercase">Hardware</h3>
+                        <div class="space-y-6">
+                            <div class="border-l-2 border-[#B38E5D] pl-6">
+                                <div class="text-2xl editorial-title">2025 Western Conference Champions</div>
+                                <div class="mono text-[8px] opacity-30 mt-1">USL Championship</div>
+                            </div>
+                            <div class="border-l-2 border-white/20 pl-6">
+                                <div class="text-2xl editorial-title">USL Championship Playoff Appearances</div>
+                                <div class="mono text-[8px] opacity-30 mt-1">Multiple seasons</div>
+                            </div>
+                            <div class="border-l-2 border-white/20 pl-6">
+                                <div class="text-2xl editorial-title">918 Community Award</div>
+                                <div class="mono text-[8px] opacity-30 mt-1">Civic engagement recognition</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-white/5 p-12 text-center">
+                    <div class="mono text-[9px] text-[#B38E5D] mb-6 tracking-[0.4em]">Home_Ground</div>
+                    <h3 class="text-6xl editorial-title mb-4 uppercase">ONEOK Field</h3>
+                    <p class="text-sm opacity-40 uppercase tracking-widest font-light mb-8 max-w-xl mx-auto">201 N Elgin Ave, Tulsa, Oklahoma 74120. Located in the heart of downtown Tulsa.</p>
+                    <a href="https://maps.google.com/?q=ONEOK+Field+Tulsa+OK" target="_blank" class="btn-outline">Map Terminal</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════ ARMORY (SHOP) ═══════════════ -->
+        <div id="shop" class="page-content">
+
+            <!-- Hero Banner -->
+            <div class="armory-hero pt-40 px-6 md:px-16">
+                <div class="armory-hero-bg"></div>
+                <div class="armory-grid-lines"></div>
+                <div class="relative z-10 max-w-7xl mx-auto w-full">
+                    <div class="mono text-[9px] text-[#B38E5D] mb-6 tracking-[0.6em]">FC TULSA // OFFICIAL_ARMORY // 2026</div>
+                    <h2 class="armory-hero-title mb-8">The<br>Armory.</h2>
+                    <p class="text-sm opacity-30 uppercase tracking-[0.3em] font-light max-w-lg mb-10">Engineered for the 918. Every piece built to perform, forged to last, designed to declare allegiance.</p>
+                    <!-- Category filters -->
+                    <div class="armory-filter" id="armory-filters">
+                        <button class="filter-pill active" data-cat="all">All</button>
+                        <button class="filter-pill" data-cat="jerseys">2026 Jerseys</button>
+                        <button class="filter-pill" data-cat="hoodies">Post-Season</button>
+                        <button class="filter-pill" data-cat="headwear">Headwear</button>
+                        <button class="filter-pill" data-cat="tees">Shirts</button>
+                        <button class="filter-pill" data-cat="accessories">Accessories</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="px-6 md:px-16 py-6 max-w-[1600px] mx-auto">
+                <div class="armory-product-grid" id="armory-grid">
+
+                    <!-- FEATURED: 2026 Philtower Kit Adult — full-width hero card -->
+                    <a href="https://shop.fctulsa.com/products/2026-philtower-authentic-kit-adult" target="_blank"
+                       class="product-card-featured" data-cat="jerseys">
+                        <div class="featured-img-container">
+                            <div class="featured-glow"></div>
+                            <img class="featured-img"
+                                 src="https://shop.fctulsa.com/cdn/shop/files/adult_kit_larger.jpg?v=1772841292&width=800"
+                                 alt="2026 Philtower Kit Adult"
+                                 onerror="this.src='https://www.fctulsa.com/wp-content/uploads/sites/39/2022/01/FC_Tulsa_Primary_Crest_HEX_small.png'; this.style.width='120px'">
+                        </div>
+                        <div class="featured-info">
+                            <div>
+                                <div class="product-category-label mb-2">2026 Kit // Flagship</div>
+                                <div class="featured-name">Philtower Kit<br><span style="opacity:0.4;font-size:0.6em;font-style:normal;font-family:'JetBrains Mono',monospace;letter-spacing:0.2em;font-size:1rem;">ADULT</span></div>
+                            </div>
+                            <p class="featured-desc">The crown jewel of the 2026 range. Inspired by Tulsa's iconic Philtower building — worn by the Western Conference Champions.</p>
+                            <div class="flex items-end justify-between flex-wrap gap-4">
+                                <div class="featured-price">$105</div>
+                                <span class="btn-gold text-[9px]">Acquire Kit →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- 2026 Stay Gold Kit Adult -->
+                    <a href="https://shop.fctulsa.com/products/2026-stay-gold-authentic-kit-adult" target="_blank"
+                       class="product-card-3d" data-cat="jerseys">
+                        <span class="product-badge badge-gold">2026</span>
+                        <div class="card-inner">
+                            <div class="product-stage">
+                                <div class="product-img-wrap">
+                                    <img src="https://shop.fctulsa.com/cdn/shop/files/3_eec27cf2-4d8c-49d5-b0fd-69dcb0db8eac.jpg?v=1772841815&width=533"
+                                         alt="2026 Stay Gold Kit Adult"
+                                         onerror="this.parentElement.parentElement.style.background='#0a0a0a'">
+                                </div>
+                                <div class="product-reflection"></div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category-label">Match Kit // Adult</div>
+                                <div class="product-name">Stay Gold Kit</div>
+                                <div class="product-price-row">
+                                    <div class="product-price">$105</div>
+                                    <span class="product-cta">Shop →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- 2026 Philtower Kit Youth -->
+                    <a href="https://shop.fctulsa.com/products/2026-philtower-authentic-kit-youth" target="_blank"
+                       class="product-card-3d" data-cat="jerseys">
+                        <span class="product-badge badge-outline">Youth</span>
+                        <div class="card-inner">
+                            <div class="product-stage">
+                                <div class="product-img-wrap">
+                                    <img src="https://shop.fctulsa.com/cdn/shop/files/4_e5f8c57a-ccb2-4e59-92ee-9911a67598a0.png?v=1772827366&width=533"
+                                         alt="2026 Philtower Kit Youth"
+                                         onerror="this.parentElement.parentElement.style.background='#0a0a0a'">
+                                </div>
+                                <div class="product-reflection"></div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category-label">Match Kit // Youth</div>
+                                <div class="product-name">Philtower Kit</div>
+                                <div class="product-price-row">
+                                    <div class="product-price">$90</div>
+                                    <span class="product-cta">Shop →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Western Conference Champion Hoodie -->
+                    <a href="https://shop.fctulsa.com/products/fc-tulsa-western-conference-champion-hoodie" target="_blank"
+                       class="product-card-3d" data-cat="hoodies">
+                        <span class="product-badge badge-champion">Champions</span>
+                        <div class="card-inner">
+                            <div class="product-stage">
+                                <div class="product-img-wrap">
+                                    <img src="https://shop.fctulsa.com/cdn/shop/files/champs-mock.png?v=1770858734&width=533"
+                                         alt="Western Conference Champion Hoodie"
+                                         onerror="this.parentElement.parentElement.style.background='#0a0a0a'">
+                                </div>
+                                <div class="product-reflection"></div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category-label">Post-Season // 2025</div>
+                                <div class="product-name">Western Conf.<br>Champions Hoodie</div>
+                                <div class="product-price-row">
+                                    <div><span class="product-price-from">From</span><span class="product-price">$48</span></div>
+                                    <span class="product-cta">Shop →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Best in the West Hoodie -->
+                    <a href="https://shop.fctulsa.com/products/fc-tulsa-best-of-the-west-hoodie" target="_blank"
+                       class="product-card-3d" data-cat="hoodies">
+                        <span class="product-badge badge-champion">Limited</span>
+                        <div class="card-inner">
+                            <div class="product-stage">
+                                <div class="product-img-wrap">
+                                    <img src="https://shop.fctulsa.com/cdn/shop/files/BEstintheWesthoodie-resized.png?v=1761992390&width=533"
+                                         alt="Best in the West Hoodie"
+                                         onerror="this.parentElement.parentElement.style.background='#0a0a0a'">
+                                </div>
+                                <div class="product-reflection"></div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category-label">Post-Season // 2025</div>
+                                <div class="product-name">Best in the<br>West Hoodie</div>
+                                <div class="product-price-row">
+                                    <div><span class="product-price-from">From</span><span class="product-price">$48</span></div>
+                                    <span class="product-cta">Shop →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- 2025 Finals Hoodie -->
+                    <a href="https://shop.fctulsa.com/products/fc-tulsa-2025-finals-hoodie" target="_blank"
+                       class="product-card-3d" data-cat="hoodies">
+                        <span class="product-badge badge-champion">Finals</span>
+                        <div class="card-inner">
+                            <div class="product-stage">
+                                <div class="product-img-wrap">
+                                    <img src="https://shop.fctulsa.com/cdn/shop/files/finals-mock.png?v=1763618655&width=533"
+                                         alt="2025 Finals Hoodie"
+                                         onerror="this.parentElement.parentElement.style.background='#0a0a0a'">
+                                </div>
+                                <div class="product-reflection"></div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category-label">Post-Season // 2025</div>
+                                <div class="product-name">2025 Finals<br>Hoodie</div>
+                                <div class="product-price-row">
+                                    <div><span class="product-price-from">From</span><span class="product-price">$48</span></div>
+                                    <span class="product-cta">Shop →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Regular Season Champions Hoodie -->
+                    <a href="https://shop.fctulsa.com/products/fc-tulsa-western-conference-regular-season-champions-hoodie" target="_blank"
+                       class="product-card-3d" data-cat="hoodies">
+                        <span class="product-badge badge-outline">Reg. Season</span>
+                        <div class="card-inner">
+                            <div class="product-stage">
+                                <div class="product-img-wrap">
+                                    <img src="https://shop.fctulsa.com/cdn/shop/files/Untitleddesign-2025-10-28T094838.411.png?v=1762643364&width=533"
+                                         alt="Western Conference Regular Season Champions Hoodie"
+                                         onerror="this.parentElement.parentElement.style.background='#0a0a0a'">
+                                </div>
+                                <div class="product-reflection"></div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category-label">Post-Season // 2025</div>
+                                <div class="product-name">Reg. Season<br>Champions</div>
+                                <div class="product-price-row">
+                                    <div><span class="product-price-from">From</span><span class="product-price">$48</span></div>
+                                    <span class="product-cta">Shop →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- 2025 Stay Gold Kit (Best Seller) -->
+                    <a href="https://shop.fctulsa.com/products/stay-gold-kit-authentic-copy" target="_blank"
+                       class="product-card-3d" data-cat="jerseys">
+                        <span class="product-badge badge-outline">Best Seller</span>
+                        <div class="card-inner">
+                            <div class="product-stage">
+                                <div class="product-img-wrap">
+                                    <img src="https://shop.fctulsa.com/cdn/shop/files/fctulsa-jersey-hninde-03866.jpg?v=1770858325&width=533"
+                                         alt="2025 Stay Gold Kit Adult"
+                                         onerror="this.parentElement.parentElement.style.background='#0a0a0a'">
+                                </div>
+                                <div class="product-reflection"></div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category-label">Match Kit // 2025</div>
+                                <div class="product-name">Stay Gold Kit<br><span style="font-size:0.75rem;opacity:0.5;">'25 Edition</span></div>
+                                <div class="product-price-row">
+                                    <div class="product-price">$85</div>
+                                    <span class="product-cta">Shop →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Placeholder Headwear Card -->
+                    <a href="https://shop.fctulsa.com/collections/headwear" target="_blank"
+                       class="product-card-3d" data-cat="headwear">
+                        <span class="product-badge badge-outline">New</span>
+                        <div class="card-inner">
+                            <div class="product-stage" style="background: radial-gradient(circle, #0a0a0a, #000);">
+                                <div class="product-img-wrap" style="display:flex;align-items:center;justify-content:center;">
+                                    <svg viewBox="0 0 100 80" fill="none" style="width:60%;opacity:0.15;">
+                                        <path d="M10 70 Q10 30 50 20 Q90 30 90 70" stroke="#B38E5D" stroke-width="1.5" fill="none"/>
+                                        <line x1="10" y1="70" x2="90" y2="70" stroke="#B38E5D" stroke-width="1.5"/>
+                                        <line x1="50" y1="20" x2="50" y2="70" stroke="#B38E5D" stroke-width="0.5" stroke-dasharray="3,3"/>
+                                    </svg>
+                                </div>
+                                <div class="product-reflection"></div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category-label">Headwear // 2026</div>
+                                <div class="product-name">Caps &<br>Beanies</div>
+                                <div class="product-price-row">
+                                    <div><span class="product-price-from">From</span><span class="product-price">$28</span></div>
+                                    <span class="product-cta">Browse →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Placeholder Tees Card -->
+                    <a href="https://shop.fctulsa.com/collections/tees" target="_blank"
+                       class="product-card-3d" data-cat="tees">
+                        <div class="card-inner">
+                            <div class="product-stage" style="background: radial-gradient(circle, #0a0a0a, #000);">
+                                <div class="product-img-wrap" style="display:flex;align-items:center;justify-content:center;">
+                                    <svg viewBox="0 0 100 110" fill="none" style="width:55%;opacity:0.15;">
+                                        <path d="M30 10 L10 30 L25 35 L25 100 L75 100 L75 35 L90 30 L70 10 L60 20 Q50 30 40 20 Z" stroke="#B38E5D" stroke-width="1.5" fill="none"/>
+                                    </svg>
+                                </div>
+                                <div class="product-reflection"></div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category-label">Apparel // Shirts</div>
+                                <div class="product-name">Tees &<br>Training Tops</div>
+                                <div class="product-price-row">
+                                    <div><span class="product-price-from">From</span><span class="product-price">$30</span></div>
+                                    <span class="product-cta">Browse →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Accessories placeholder card -->
+                    <a href="https://shop.fctulsa.com/collections/new-arrivals" target="_blank"
+                       class="product-card-3d" data-cat="accessories">
+                        <span class="product-badge badge-outline">Matchday</span>
+                        <div class="card-inner">
+                            <div class="product-stage" style="background: radial-gradient(circle, #0a0a0a, #000);">
+                                <div class="product-img-wrap" style="display:flex;align-items:center;justify-content:center;">
+                                    <div style="text-align:center;opacity:0.15;">
+                                        <svg viewBox="0 0 80 80" fill="none" style="width:50%;">
+                                            <circle cx="40" cy="40" r="35" stroke="#B38E5D" stroke-width="1.5"/>
+                                            <path d="M20 40 Q40 20 60 40 Q40 60 20 40Z" stroke="#B38E5D" stroke-width="1" fill="none"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="product-reflection"></div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category-label">Accessories</div>
+                                <div class="product-name">Scarves,<br>Flags & More</div>
+                                <div class="product-price-row">
+                                    <div><span class="product-price-from">From</span><span class="product-price">$18</span></div>
+                                    <span class="product-cta">Browse →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+
+                <!-- Member Perk Banner -->
+                <div class="armory-perk-banner mt-1 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-6">
+                        <div class="text-[#B38E5D] text-3xl editorial-title italic opacity-60">20%</div>
+                        <div>
+                            <div class="mono text-[9px] text-[#B38E5D] tracking-[0.4em] mb-1">Member Perk</div>
+                            <div class="text-xs opacity-30 uppercase tracking-widest font-light">Armory discount with any 2026 season membership package</div>
+                        </div>
+                    </div>
+                    <a href="https://shop.fctulsa.com/collections/shop-all" target="_blank" class="btn-gold whitespace-nowrap flex-shrink-0">Full Armory →</a>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-[#050505] pt-24 pb-12 px-6 md:px-12 relative border-t border-[#B38E5D]/10">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 mb-20">
+                <div>
+                    <div class= img-container mb-4">
+                        <img src="Placeholder.png" alt="FC Tulsa Crest" class="w-10 opacity-100">
+                    </div>
+                    <div class="mono text-[8px] opacity-30 leading-loose">FC TULSA SOCCER<br>THE ATELIER // 918<br>TULSA, OKLAHOMA</div>
+                </div>
+                <div>
+                    <div class="mono text-[9px] text-[#B38E5D] mb-6 tracking-[0.3em]">Navigate</div>
+                    <div class="space-y-3">
+                        <div class="mono text-[8px] opacity-40 hover:opacity-100 cursor-pointer transition-opacity" onclick="showPage('home')">Home</div>
+                        <div class="mono text-[8px] opacity-40 hover:opacity-100 cursor-pointer transition-opacity" onclick="showPage('roster')">Roster</div>
+                        <div class="mono text-[8px] opacity-40 hover:opacity-100 cursor-pointer transition-opacity" onclick="showPage('schedule')">Schedule</div>
+                        <div class="mono text-[8px] opacity-40 hover:opacity-100 cursor-pointer transition-opacity" onclick="showPage('news')">News</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="mono text-[9px] text-[#B38E5D] mb-6 tracking-[0.3em]">Club</div>
+                    <div class="space-y-3">
+                        <div class="mono text-[8px] opacity-40 hover:opacity-100 cursor-pointer transition-opacity" onclick="showPage('tickets')">Tickets</div>
+                        <div class="mono text-[8px] opacity-40 hover:opacity-100 cursor-pointer transition-opacity" onclick="showPage('shop')">Armory</div>
+                        <div class="mono text-[8px] opacity-40 hover:opacity-100 cursor-pointer transition-opacity" onclick="showPage('club')">Atelier</div>
+                        <a href="https://www.fctulsa.com/espanol/" class="block mono text-[8px] opacity-40 hover:opacity-100 transition-opacity">Español</a>
+                    </div>
+                </div>
+                <div>
+                    <div class="mono text-[9px] text-[#B38E5D] mb-6 tracking-[0.3em]">Connect</div>
+                    <div class="space-y-3">
+                        <a href="https://www.instagram.com/fctulsa" target="_blank" class="block mono text-[8px] opacity-40 hover:opacity-100 transition-opacity">Instagram</a>
+                        <a href="https://twitter.com/fctulsa" target="_blank" class="block mono text-[8px] opacity-40 hover:opacity-100 transition-opacity">X (Twitter)</a>
+                        <a href="https://www.facebook.com/FCTulsa" target="_blank" class="block mono text-[8px] opacity-40 hover:opacity-100 transition-opacity">Facebook</a>
+                        <a href="mailto:info@fctulsa.com" class="block mono text-[8px] opacity-40 hover:opacity-100 transition-opacity">Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center pt-10 border-t border-white/5 gap-4 mono text-[8px] opacity-20 tracking-widest uppercase">
+                <div>© 2026 FC Tulsa Soccer, LLC. All rights reserved. USL Championship.</div>
+                <div class="flex gap-8">
+                    <a href="https://www.fctulsa.com/privacy-policy/" target="_blank" class="hover:opacity-60 transition-opacity">Privacy</a>
+                    <a href="https://www.fctulsa.com/terms-of-service/" target="_blank" class="hover:opacity-60 transition-opacity">Terms</a>
+                    <a href="https://www.fctulsa.com/accessibility/" target="_blank" class="hover:opacity-60 transition-opacity">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ═══════════════ SQUAD DATA ═══════════════
+        const SQUAD_DATA = {
+            starters: [
+                { id: 1,    name: 'Alex Tambakis',      pos: 'GK', h: "6' 3\"",  w: "195 lbs", dob: 'Nov 8, 1992',   home: 'Athens, Greece',      prev: 'New Mexico United',         top: 88, left: 50, img: 'Placeholder.png' },
+                { id: 12,   name: 'Lucas Stauffer',     pos: 'DF', h: "5' 11\"", w: "170 lbs", dob: 'Apr 21, 1995',  home: 'Owensboro, KY',       prev: 'Las Vegas Lights FC',        top: 73, left: 18, img: 'Lucas Stauffer.png' },
+                { id: 91,   name: 'Abdoulaye Cissoko',  pos: 'DF', h: "6' 3\"",  w: "212 lbs", dob: 'Dec 27, 1999',  home: 'Les Ulis, France',    prev: 'Memphis 901 FC',             top: 70, left: 38, img: 'Abdoulaye Cissoko.png' },
+                { id: 15,   name: 'Lamar Batista',      pos: 'DF', h: "6' 2\"",  w: "190 lbs", dob: 'Mar 7, 1998',   home: 'Oklahoma City, OK',   prev: 'San Antonio FC',             top: 70, left: 62, img: 'Lamar Batista.png' },
+                { id: 47,   name: 'Harvey St Clair',    pos: 'DF', h: "5' 11\"", w: "165 lbs", dob: 'Nov 13, 1998',  home: 'London, England',     prev: 'Vis Pesaro',                 top: 73, left: 82, img: 'Harvey St Clair.png' },
+                { id: 26,   name: 'Giordano Colli',     pos: 'MF', h: "5' 11\"", w: "175 lbs", dob: 'May 1, 2000',   home: 'Perth, Australia',    prev: 'Perth Glory',                top: 53, left: 50, img: 'Giordano Colli.png' },
+                { id: 6,    name: 'Boubacar Diallo',    pos: 'MF', h: "5' 9\"",  w: "155 lbs", dob: 'Aug 28, 2002',  home: 'Dakar, Senegal',      prev: 'Sigma FC',                   top: 48, left: 28, img: 'Boubacar Diallo.png' },
+                { id: 5,    name: 'Marcos Cerato',      pos: 'MF', h: "5' 10\"", w: "160 lbs", dob: '1998',          home: 'Brazil',              prev: 'Sistema',                    top: 48, left: 72, img: 'Marcos Cerato.png' },
+                { id: 10,   name: 'Kalil ElMedkhar',    pos: 'FW', h: "6' 0\"",  w: "175 lbs", dob: 'Aug 18, 1999',  home: 'Middletown, DE',      prev: 'FC Dallas',                  top: 25, left: 50, img: 'Kalil ElMedkhar.png' },
+                { id: 'LP', name: 'Bruno Lapa',         pos: 'FW', h: "5' 11\"", w: "165 lbs", dob: 'May 10, 1997',  home: 'Curitiba, Brazil',    prev: 'Birmingham Legion FC',       top: 20, left: 28, img: 'Placeholder.png' },
+                { id: 'NP', name: 'Nelson Pierre',      pos: 'FW', h: "6' 1\"",  w: "180 lbs", dob: 'Mar 1, 2005',   home: 'USA',                 prev: 'Vancouver Whitecaps FC',     top: 20, left: 72, img: 'Nelson Pierre.png' },
+            ],
+            reserves: [
+                { name: 'Triston Henry',          pos: 'GK', id: '--', img: 'Placeholder.png' },
+                { name: 'Cole Johnson',           pos: 'GK', id: 39,   img: 'Placeholder.png' },
+                { name: 'Tyler Derrick',          pos: 'GK', id: 16,   img: 'Placeholder.png' },
+                { name: 'Michael Creek',          pos: 'GK', id: 1,    img: 'Placeholder.png' },
+                { name: 'Johan Penaranda',        pos: 'GK', id: 99,   img: 'Placeholder.png' },
+                { name: 'Owen Damm',              pos: 'DF', id: 2,    img: 'Owen Damm.png' },
+                { name: 'Alonzo Clarke',          pos: 'DF', id: '--', img: 'Placeholder.png' },
+                { name: 'Delentz Pierre',         pos: 'DF', id: 4,    img: 'Delentz Pierre.png' },
+                { name: 'Ian Carlos Souza Daniel',pos: 'DF', id: 98,   img: 'Ian Carlos Souza Daniel.png' },
+                { name: 'Anthony Harper',         pos: 'DF', id: 25,   img: 'Placeholder.png' },
+                { name: 'Arthur Rogers',          pos: 'DF', id: 14,   img: 'Placeholder.png' },
+                { name: 'Travian Sousa',          pos: 'DF', id: 3,    img: 'Placeholder.png' },
+                { name: 'Raheem Somersall',       pos: 'MF', id: '--', img: 'Placeholder.png' },
+                { name: 'Bailey Sparks',          pos: 'MF', id: '--', img: 'Placeholder.png' },
+                { name: 'Jeorgio Kocevski',       pos: 'MF', id: '--', img: 'Placeholder.png' },
+                { name: 'Zion Siranga',           pos: 'MF', id: '--', img: 'Placeholder.png' },
+                { name: 'Elliot Goldthorp',       pos: 'MF', id: 37,   img: 'Placeholder.png' },
+                { name: 'Andrew Booth',           pos: 'MF', id: 7,    img: 'Placeholder.png' },
+                { name: 'Patrick Seagrist',       pos: 'MF', id: 20,   img: 'Placeholder.png' },
+                { name: 'Jamie Webber',           pos: 'FW', id: 8,    img: 'Jamie Webber.png' },
+                { name: 'Stefan Lukić',           pos: 'FW', id: 22,   img: 'Stefan Lukic.png' },
+                { name: 'Alex Dalou',             pos: 'FW', id: 21,   img: 'Placeholder.png' },
+                { name: 'Trevor Amann',           pos: 'FW', id: 19,   img: 'Placeholder.png' },
+                { name: 'Taylor Calheira',        pos: 'FW', id: 9,    img: 'Placeholder.png' },
+            ]
+        };
+
+        // ═══════════════ SCHEDULE DATA ═══════════════
+        const SCHEDULE = [
+            { date: 'Mar 8',  day: 'Sun', month: 'MAR', ha: 'H', opp: 'New Mexico United',            abbr:'NMU', conf:'USL Championship · Western', venue: 'ONEOK Field',       city:'Tulsa, OK',         time: '6:00 PM', result:'W', score:'2-0', gf:2, ga:0, broadcast:'ESPN+' },
+            { date: 'Mar 15', day: 'Sat', month: 'MAR', ha: 'A', opp: 'Colorado Springs Switchbacks',  abbr:'CSS', conf:'USL Championship · Western', venue: 'Weidner Field',     city:'Colorado Springs',  time: '8:00 PM', result:'D', score:'1-1', gf:1, ga:1, broadcast:'ESPN+' },
+            { date: 'Mar 22', day: 'Sat', month: 'MAR', ha: 'H', opp: 'Las Vegas Lights FC',           abbr:'LVL', conf:'USL Championship · Western', venue: 'ONEOK Field',       city:'Tulsa, OK',         time: '7:00 PM', result:'W', score:'3-1', gf:3, ga:1, broadcast:'ESPN+' },
+            { date: 'Mar 29', day: 'Sat', month: 'MAR', ha: 'H', opp: 'Oakland Roots SC',              abbr:'OAK', conf:'USL Championship · Western', venue: 'ONEOK Field',       city:'Tulsa, OK',         time: '7:00 PM', result:'upcoming', score:'', gf:0, ga:0, broadcast:'ESPN+', next:true },
+            { date: 'Apr 5',  day: 'Sat', month: 'APR', ha: 'A', opp: 'New Mexico United',             abbr:'NMU', conf:'USL Championship · Western', venue: 'Rio Grande Credit', city:'Albuquerque, NM',   time: '8:00 PM', result:'upcoming', score:'', gf:0, ga:0, broadcast:'ESPN+' },
+            { date: 'Apr 12', day: 'Sat', month: 'APR', ha: 'H', opp: 'Colorado Springs Switchbacks',  abbr:'CSS', conf:'USL Championship · Western', venue: 'ONEOK Field',       city:'Tulsa, OK',         time: '7:00 PM', result:'upcoming', score:'', gf:0, ga:0, broadcast:'ESPN+' },
+            { date: 'Apr 19', day: 'Sat', month: 'APR', ha: 'A', opp: 'San Antonio FC',                abbr:'SA',  conf:'USL Championship · Western', venue: 'Toyota Field',      city:'San Antonio, TX',   time: '7:30 PM', result:'upcoming', score:'', gf:0, ga:0, broadcast:'ESPN+' },
+            { date: 'Apr 26', day: 'Sat', month: 'APR', ha: 'H', opp: 'El Paso Locomotive FC',         abbr:'EPL', conf:'USL Championship · Western', venue: 'ONEOK Field',       city:'Tulsa, OK',         time: '7:00 PM', result:'upcoming', score:'', gf:0, ga:0, broadcast:'ESPN+' },
+            { date: 'May 3',  day: 'Sat', month: 'MAY', ha: 'H', opp: 'Rio Grande Valley FC',          abbr:'RGV', conf:'USL Championship · Western', venue: 'ONEOK Field',       city:'Tulsa, OK',         time: '7:00 PM', result:'upcoming', score:'', gf:0, ga:0, broadcast:'ESPN+' },
+            { date: 'May 10', day: 'Sat', month: 'MAY', ha: 'A', opp: 'Phoenix Rising FC',             abbr:'PHX', conf:'USL Championship · Western', venue: 'Phoenix Rising Std',city:'Phoenix, AZ',       time: '9:00 PM', result:'upcoming', score:'', gf:0, ga:0, broadcast:'ESPN+' },
+            { date: 'May 17', day: 'Sat', month: 'MAY', ha: 'H', opp: 'Monterey Bay FC',               abbr:'MBY', conf:'USL Championship · Western', venue: 'ONEOK Field',       city:'Tulsa, OK',         time: '7:00 PM', result:'upcoming', score:'', gf:0, ga:0, broadcast:'ESPN+' },
+            { date: 'May 24', day: 'Sat', month: 'MAY', ha: 'A', opp: 'Las Vegas Lights FC',           abbr:'LVL', conf:'USL Championship · Western', venue: 'Cashman Field',     city:'Las Vegas, NV',     time: '9:00 PM', result:'upcoming', score:'', gf:0, ga:0, broadcast:'ESPN+' },
+            { date: 'May 31', day: 'Sat', month: 'MAY', ha: 'H', opp: 'Phoenix Rising FC',             abbr:'PHX', conf:'USL Championship · Western', venue: 'ONEOK Field',       city:'Tulsa, OK',         time: '7:00 PM', result:'upcoming', score:'', gf:0, ga:0, broadcast:'ESPN+' },
+            { date: 'Jun 7',  day: 'Sat', month: 'JUN', ha: 'A', opp: 'Oakland Roots SC',              abbr:'OAK', conf:'USL Championship · Western', venue: 'Pioneer Stadium',   city:'Oakland, CA',       time: '9:30 PM', result:'upcoming', score:'', gf:0, ga:0, broadcast:'ESPN+' },
+            { date: 'Jun 14', day: 'Sat', month: 'JUN', ha: 'H', opp: 'San Antonio FC',                abbr:'SA',  conf:'USL Championship · Western', venue: 'ONEOK Field',       city:'Tulsa, OK',         time: '7:00 PM', result:'upcoming', score:'', gf:0, ga:0, broadcast:'ESPN+' },
+        ];
+
+        // ═══════════════ RENDER ROSTER ═══════════════
+        function renderRoster() {
+            const pitch = document.getElementById('tactical-pitch');
+            const mobileGrid = document.getElementById('mobile-starters-grid');
+            const reserveContainer = document.getElementById('reserve-grid-container');
+
+            // Desktop pitch nodes
+            SQUAD_DATA.starters.forEach(p => {
+                const safeId = String(p.id).replace(/'/g, "\\'");
+                const safeName = p.name.replace(/'/g, "\\'");
+                const safePos = p.pos.replace(/'/g, "\\'");
+                const safeH = p.h.replace(/"/g, '&quot;').replace(/'/g, "\\'");
+                const safeW = p.w.replace(/'/g, "\\'");
+                const safeDob = p.dob.replace(/'/g, "\\'");
+                const safeHome = p.home.replace(/'/g, "\\'");
+                const safePrev = p.prev.replace(/'/g, "\\'");
+
+                const node = document.createElement('div');
+                node.className = 'player-node';
+                node.style.top = `${p.top}%`;
+                node.style.left = `${p.left}%`;
+                node.innerHTML = `
+                    <div class="node-disc">${p.id}</div>
+                    <div class="diamond-hud-card">
+                        <div class="diamond-shape" onclick="initiateExpansion('${safeName}','${safePos}','${safeH}','${safeW}','${safeDob}','${safeHome}','${safePrev}',this)">
+                            <div class="diamond-inner">
+                                <div class="mono text-[7px] text-[#B38E5D] mb-3">#${p.id} // ${p.pos}</div>
+                                <div class="bg-zinc-900 aspect-square mb-3 overflow-hidden border border-white/5">
+                                    <img src="${p.img}" class="grayscale w-full h-full object-cover" alt="${p.name}">
+                                </div>
+                                <h4 class="text-xs font-bold italic leading-tight uppercase">${p.name}</h4>
+                                <div class="mt-3 pt-3 border-t border-white/5 flex justify-between mono text-[6px] opacity-30"><span>${p.home.split(',')[0]}</span><span>${p.prev.split(' ').slice(-2).join(' ')}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                pitch.appendChild(node);
+
+                // Mobile starter card
+                const mCard = document.createElement('div');
+                mCard.className = 'player-card-compact group';
+                mCard.onclick = () => initiateExpansion(p.name, p.pos, p.h, p.w, p.dob, p.home, p.prev, mCard);
+                mCard.innerHTML = `
+                    <div class="absolute inset-0 opacity-10 group-hover:opacity-25 transition-opacity">
+                        <img src="${p.img}" class="w-full h-full object-cover grayscale" alt="${p.name}">
+                    </div>
+                    <div class="relative z-10">
+                        <div class="mono text-[#B38E5D] text-[7px] mb-1">#${p.id} // ${p.pos}</div>
+                        <h3 class="text-base italic font-light uppercase leading-tight">${p.name.split(' ').join('<br>')}</h3>
+                    </div>
+                `;
+                mobileGrid.appendChild(mCard);
+            });
+
+            // Reserve grid
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-px bg-white/5 border border-white/5';
+            SQUAD_DATA.reserves.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'player-card-compact group';
+                card.onclick = () => initiateExpansion(p.name, p.pos, '—', '—', '—', '—', '—', card);
+                card.innerHTML = `
+                    <div class="absolute inset-0 opacity-10 group-hover:opacity-25 transition-opacity">
+                        <img src="${p.img}" class="w-full h-full object-cover grayscale" alt="${p.name}">
+                    </div>
+                    <div class="relative z-10">
+                        <div class="mono text-[#B38E5D] text-[7px] mb-1">#${p.id} // ${p.pos}</div>
+                        <h3 class="text-base italic font-light uppercase leading-tight">${p.name.split(' ').join('<br>')}</h3>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            reserveContainer.appendChild(grid);
+        }
+
+
+        // ═══════════════ RENDER SCHEDULE ═══════════════
+        function renderSchedule() {
+            const list = document.getElementById('schedule-list');
+            if (!list) return;
+            const played = SCHEDULE.filter(m => m.result !== 'upcoming');
+            const w = played.filter(m => m.result === 'W').length;
+            const d = played.filter(m => m.result === 'D').length;
+            const l = played.filter(m => m.result === 'L').length;
+            const gf = played.reduce((s,m) => s + m.gf, 0);
+            const ga = played.reduce((s,m) => s + m.ga, 0);
+            const pts = w * 3 + d;
+            const setEl = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+            setEl('rec-w',w); setEl('rec-d',d); setEl('rec-l',l);
+            setEl('rec-gf',gf); setEl('rec-ga',ga); setEl('rec-pts',pts);
+            setEl('rec-pos','2nd'); setEl('season-record-display', w+'W '+d+'D '+l+'L');
+            list.innerHTML = SCHEDULE.map((m,i) => {
+                const rClass = m.result==='W'?'result-w':m.result==='D'?'result-d':m.result==='L'?'result-l':'result-upcoming';
+                const rText = m.result==='upcoming'?'Upcoming':(m.result+'  '+m.score);
+                const haClass = m.ha==='H'?'ha-home':'ha-away';
+                const dayNum = m.date.split(' ')[1];
+                return '<div class="match-hud-card '+(m.next?'next-match':'')+'" id="mhc-'+i+'" onclick="toggleMatchDetail('+i+')">'+
+                    '<div class="match-hud-inner">'+
+                        '<div class="match-date-block">'+
+                            '<div class="match-date-day">'+m.day+'</div>'+
+                            '<div class="match-date-num">'+dayNum+'</div>'+
+                            '<div class="match-date-month">'+m.month+'</div>'+
+                        '</div>'+
+                        '<div class="match-ha-block"><div class="ha-pip '+haClass+'">'+m.ha+'</div></div>'+
+                        '<div class="match-opp-block">'+
+                            '<div class="opp-crest"><span class="opp-initials">'+m.abbr.substring(0,2)+'</span></div>'+
+                            '<div>'+
+                                '<div class="opp-name-main">'+m.opp+'</div>'+
+                                '<div class="opp-conf">'+m.conf+'</div>'+
+                                (m.next?'<div class="next-match-pip">Next Match</div>':'')+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="match-venue-block">'+
+                            '<div class="venue-name">'+m.venue+'</div>'+
+                            '<div class="venue-city">'+m.city+'</div>'+
+                        '</div>'+
+                        '<div class="match-time-block" style="display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:0.45rem;">'+
+                            '<div class="time-display">'+(m.result!=='upcoming'?m.score:m.time)+'</div>'+
+                            '<div class="time-ct">'+(m.result!=='upcoming'?'Final':'CT')+'</div>'+
+                            '<span class="result-badge '+rClass+'">'+rText+'</span>'+
+                        '</div>'+
+                        '<svg class="match-expand-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>'+
+                    '</div>'+
+                    '<div class="match-detail-panel" id="mdp-'+i+'">'+
+                        '<div class="match-detail-inner">'+
+                            '<div><div class="detail-item-label">Kickoff</div><div class="detail-item-value">'+m.time+' CT</div></div>'+
+                            '<div><div class="detail-item-label">Venue</div><div class="detail-item-value" style="font-size:0.9rem;">'+m.venue+'</div></div>'+
+                            '<div><div class="detail-item-label">Location</div><div class="detail-item-value" style="font-size:0.9rem;">'+m.city+'</div></div>'+
+                            '<div><div class="detail-item-label">Broadcast</div><div class="detail-item-value">'+m.broadcast+'</div></div>'+
+                        '</div>'+
+                        '<div class="match-cta-row">'+
+                            '<a href="https://seatgeek.com/fctulsa" target="_blank" class="match-ticket-btn">Get Tickets</a>'+
+                            '<a href="https://www.fctulsa.com/schedule/" target="_blank" class="match-ticket-btn secondary">Match Info ↗</a>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>';
+            }).join('');
+        }
+
+        function toggleMatchDetail(i) {
+            const card = document.getElementById('mhc-'+i);
+            const panel = document.getElementById('mdp-'+i);
+            const isOpen = panel.classList.contains('open');
+            document.querySelectorAll('.match-detail-panel').forEach(p => p.classList.remove('open'));
+            document.querySelectorAll('.match-hud-card').forEach(c => { if(!c.classList.contains('next-match')) c.classList.remove('expanded'); });
+            if (!isOpen) { panel.classList.add('open'); card.classList.add('expanded'); }
+        }
+
+
+        // ═══════════════ PAGE NAVIGATION ═══════════════
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(pageId);
+            if (target) target.classList.add('active');
+
+            const navMap = { tickets: 'tickets', schedule: 'schedule', roster: 'roster', news: 'news', club: 'atelier', shop: 'armory', home: 'home' };
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.textContent.trim().toLowerCase() === (navMap[pageId] || pageId)) {
+                    item.classList.add('active');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ═══════════════ PROFILE MODAL ═══════════════
+        function initiateExpansion(name, pos, height, weight, dob, home, prev, element) {
+            element.classList.add('expanding');
+
+            setTimeout(() => {
+                const view = document.getElementById('player-profile-view');
+                document.getElementById('p-name').innerHTML = name.split(' ').map((w, i) => i === name.split(' ').length - 1 ? `<span class="font-bold not-italic">${w}</span>` : w).join('<br>');
+                document.getElementById('p-pos-tag').innerText = pos;
+                document.getElementById('p-height').innerText = height;
+                document.getElementById('p-weight').innerText = weight;
+                document.getElementById('p-dob').innerText = dob;
+                document.getElementById('p-home').innerText = home;
+
+                const bio = document.getElementById('p-bio');
+                bio.innerHTML = getBio(name, prev);
+
+                view.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                element.classList.remove('expanding');
+            }, 650);
+        }
+
+        function getBio(name, prev) {
+            const bios = {
+                'Abdoulaye Cissoko': `
+                    <div class="border-l-2 border-[#B38E5D] pl-8">
+                        <p class="mb-3 font-black text-[#B38E5D]">2025-26 // FC Tulsa // Captain</p>
+                        <p>Named Club Captain for the 2025 season. Clinical leadership anchoring the 918 defensive structure through a Western Conference Championship campaign.</p>
+                    </div>
+                    <div class="border-l-2 border-white/10 pl-8">
+                        <p class="mb-3 font-black text-white/40">2024 // Memphis 901 FC // USL Championship</p>
+                        <p>2,500+ minutes logged. Led squad with 20 blocks, 22 tackles (64.7% success), and 18 interceptions.</p>
+                    </div>
+                    <div class="border-l-2 border-white/10 pl-8">
+                        <p class="mb-3 font-black text-white/40">2023 // Tacoma Defiance // MLS Next Pro</p>
+                        <p>MLS Next Pro Best XI selection. 16 appearances, 32 tackles (76.2% success), 5 goals from set pieces.</p>
+                    </div>
+                    <div class="pt-8 border-t border-white/10">
+                        <p class="text-[#B38E5D] font-bold mb-2">Personal Intel</p>
+                        <p>Developed at CO Les Ulis in France. Nephew of former Premier League icon Demba Ba.</p>
+                    </div>`,
+                'Destiny Lalaguna': `
+                    <div class="border-l-2 border-[#B38E5D] pl-8">
+                        <p class="mb-3 font-black text-[#B38E5D]">Professional Background</p>
+                        <p>MS, LAT, ATC. Joins FC Tulsa after serving as Assistant Athletic Trainer at Phoenix Rising FC (2023–2025), winning a USL Championship title. Former Head Athletic Trainer at Barca Residency Academy in MLS Next.</p>
+                    </div>
+                    <div class="border-l-2 border-white/10 pl-8">
+                        <p class="mb-3 font-black text-white/40">Education</p>
+                        <p>B.S. Health and Human Performance — Montana State University-Billings. M.S. Athletic Training — Weber State University.</p>
+                    </div>
+                    <div class="border-l-2 border-white/10 pl-8">
+                        <p class="mb-3 font-black text-white/40">Certifications</p>
+                        <p>Licensed (LAT) and Certified (ATC). Specialties: Spinal Manipulation, Dry Needling, NASM Performance Enhancement (PES).</p>
+                    </div>`,
+                'Nelson Pierre': `
+                    <div class="border-l-2 border-[#B38E5D] pl-8">
+                        <p class="mb-3 font-black text-[#B38E5D]">2026 // FC Tulsa // On Loan</p>
+                        <p>Joined FC Tulsa on loan from Vancouver Whitecaps FC for the 2026 campaign. At 21, Pierre brings electrifying pace and direct attacking play to the forward line.</p>
+                    </div>
+                    <div class="border-l-2 border-white/10 pl-8">
+                        <p class="mb-3 font-black text-white/40">Vancouver Whitecaps FC // MLS</p>
+                        <p>Developed through the Whitecaps academy system. Made his professional debut before signing his first senior contract with the MLS club.</p>
+                    </div>`,
+                'Alex Tambakis': `
+                    <div class="border-l-2 border-[#B38E5D] pl-8">
+                        <p class="mb-3 font-black text-[#B38E5D]">2026 // FC Tulsa // #1</p>
+                        <p>First-choice goalkeeper brings vast USL Championship experience. Athens-born shot-stopper provides commanding presence between the posts.</p>
+                    </div>
+                    <div class="border-l-2 border-white/10 pl-8">
+                        <p class="mb-3 font-black text-white/40">Previous // New Mexico United</p>
+                        <p>Recorded multiple clean sheets and strong save percentages during his tenure with New Mexico United in the USL Championship.</p>
+                    </div>`,
+            };
+            return bios[name] || `
+                <div class="border-l-2 border-[#B38E5D] pl-8">
+                    <p class="mb-3 font-black text-[#B38E5D]">Active Deployment // 2026</p>
+                    <p>Confirmed in the 918 terminal for the Western Conference title defense. Performance metrics tracking at optimal capacity for the spring campaign.</p>
+                </div>
+                <div class="border-l-2 border-white/10 pl-8">
+                    <p class="mb-3 font-black text-white/40">Previous Station</p>
+                    <p>${prev !== '—' ? prev : 'Historical data archived in club records.'}. Tactical record verified and integrated into 2026 deployment scheme.</p>
+                </div>`;
+        }
+
+        function closeProfile() {
+            document.getElementById('player-profile-view').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ═══════════════ MOBILE NAV ═══════════════
+        function openMobileNav() { document.getElementById('mobile-nav').classList.add('open'); document.body.style.overflow = 'hidden'; }
+        function closeMobileNav() { document.getElementById('mobile-nav').classList.remove('open'); document.body.style.overflow = ''; }
+
+        // ═══════════════ HEADER SCROLL ═══════════════
+        window.addEventListener('scroll', () => {
+            document.getElementById('main-header').classList.toggle('scrolled', window.scrollY > 80);
+        });
+
+        // ═══════════════ KEYBOARD ═══════════════
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') { closeProfile(); closeMobileNav(); }
+        });
+
+        // ═══════════════ ARMORY FILTERS ═══════════════
+        document.addEventListener('click', e => {
+            const pill = e.target.closest('.filter-pill');
+            if (!pill) return;
+            document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            const cat = pill.dataset.cat;
+            document.querySelectorAll('#armory-grid [data-cat]').forEach(card => {
+                if (cat === 'all' || card.dataset.cat === cat) {
+                    card.style.display = '';
+                    card.style.animation = 'pageIn 0.4s var(--ease-luxury)';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // ═══════════════ INIT ═══════════════
+        window.addEventListener('load', () => {
+            renderRoster();
+            renderSchedule();
+            setTimeout(() => {
+                document.getElementById('preloader').style.transform = 'translateY(-100%)';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
